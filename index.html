@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pietro Manganelli Conforti</title>
+<meta name="description" content="Postdoctoral Researcher at Sapienza University of Rome. Research in deep learning, computer vision, and explainable AI.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4EFE6;
+  --ink: #1A1814;
+  --ink-2: #4A453E;
+  --ink-3: #8A8378;
+  --line: rgba(26, 24, 20, 0.14);
+  --serif: 'Newsreader', Georgia, serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* DARK MODE */
+[data-theme="dark"] {
+  --bg: #1A1814;
+  --ink: #F0EBE0;
+  --ink-2: #B5AFA6;
+  --ink-3: #6A6460;
+  --line: rgba(240, 235, 224, 0.11);
+}
+[data-theme="dark"] .pub-list li:hover,
+[data-theme="dark"] .research-list li:hover,
+[data-theme="dark"] .edu-list li:hover {
+  background: rgba(240, 235, 224, 0.05);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.6;
+  font-feature-settings: "ss01", "ss02";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background 0.35s ease, color 0.35s ease;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+#cursor-dot {
+  position: fixed;
+  width: 7px;
+  height: 7px;
+  background: var(--ink);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: background 0.35s ease, opacity 0.2s ease;
+  opacity: 0;
+}
+@media (hover: none) {
+  #cursor-dot { display: none; }
+  body { cursor: auto; }
+}
+a, button { cursor: none; }
+
+/* DARK MODE TOGGLE */
+#dark-toggle {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink-3);
+  font-family: var(--mono);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: none;
+  z-index: 200;
+  transition: background 0.35s ease, border-color 0.35s ease, color 0.2s ease, opacity 0.2s ease;
+  opacity: 0.55;
+}
+#dark-toggle:hover { opacity: 1; color: var(--ink); }
+
+/* BACK TO TOP */
+#back-top {
+  position: fixed;
+  bottom: 28px;
+  right: 72px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, color 0.15s ease;
+  text-transform: lowercase;
+  z-index: 200;
+}
+#back-top.visible { opacity: 0.55; pointer-events: auto; }
+#back-top:hover { opacity: 1; color: var(--ink); }
+
+/* COPY EMAIL FEEDBACK */
+.email-copy-wrap {
+  position: relative;
+  display: inline;
+}
+.copy-feedback {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  bottom: calc(100% + 4px);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--bg);
+  background: var(--ink);
+  padding: 3px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 300;
+}
+.copy-feedback.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* HEADER */
+header {
+  padding: 80px 0 0;
+}
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+  margin-bottom: 32px;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  margin-bottom: 16px;
+}
+.role {
+  font-size: 18px;
+  color: var(--ink-2);
+  font-style: italic;
+  margin-bottom: 40px;
+}
+
+/* NAV */
+nav {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 16px 0;
+  margin-bottom: 64px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+nav a {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+  text-decoration: none;
+  text-transform: lowercase;
+  transition: color 0.15s;
+}
+nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+
+/* SECTIONS */
+section { margin-bottom: 80px; }
+
+h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 24px;
+  letter-spacing: -0.005em;
+  margin-bottom: 24px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+p { margin-bottom: 16px; color: var(--ink-2); }
+p:last-child { margin-bottom: 0; }
+p a, .inline-link {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--ink-3);
+  transition: text-decoration-color 0.15s;
+}
+p a:hover, .inline-link:hover { text-decoration-color: var(--ink); }
+
+/* RESEARCH */
+.research-list {
+  list-style: none;
+}
+.research-list li {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 24px;
+  align-items: baseline;
+}
+.research-list li:last-child { border-bottom: none; }
+.research-list .area {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+}
+.research-list .desc {
+  color: var(--ink-2);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+/* PUBLICATIONS */
+.pub-group { margin-bottom: 40px; }
+.pub-group:last-child { margin-bottom: 0; }
+.pub-group h3 {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+.pub-list {
+  list-style: none;
+  counter-reset: pub-counter;
+}
+.pub-list li {
+  counter-increment: pub-counter;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 32px 1fr 56px;
+  gap: 16px;
+  align-items: baseline;
+}
+.pub-list li:last-child { border-bottom: none; }
+.pub-list li::before {
+  content: counter(pub-counter, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.pub-title {
+  font-size: 17px;
+  line-height: 1.4;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.pub-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+.pub-meta .me {
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: var(--ink-3);
+}
+.pub-year {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  text-align: right;
+  letter-spacing: 0.02em;
+}
+
+/* EDUCATION & POSITIONS */
+.edu-list { list-style: none; }
+.edu-list li {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 24px;
+  align-items: baseline;
+}
+.edu-list li:last-child { border-bottom: none; }
+.edu-years {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 0.02em;
+}
+.edu-info .degree {
+  color: var(--ink);
+  font-size: 17px;
+  margin-bottom: 2px;
+}
+.edu-info .school {
+  color: var(--ink-3);
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* CONTACT */
+.contact-list { list-style: none; }
+.contact-list li {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 24px;
+  align-items: baseline;
+}
+.contact-list li:last-child { border-bottom: none; }
+.contact-list .label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+}
+.contact-list .value {
+  color: var(--ink);
+  font-size: 16px;
+  word-break: break-word;
+}
+.contact-list a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--ink-3);
+  transition: text-decoration-color 0.15s;
+}
+.contact-list a:hover { text-decoration-color: var(--ink); }
+
+/* FOOTER */
+footer {
+  margin-top: 80px;
+  padding: 32px 0;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* PROGRESS BAR */
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--ink-2);
+  z-index: 100;
+  transition: width 0.08s linear;
+}
+
+/* GRAIN OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* SCROLL REVEAL */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* NAV ACTIVE */
+nav a.active {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--ink-3);
+}
+
+/* ROW HOVER */
+.pub-list li,
+.research-list li,
+.edu-list li {
+  transition: background 0.15s ease;
+  border-radius: 3px;
+  margin-left: -8px;
+  margin-right: -8px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.pub-list li:hover,
+.research-list li:hover,
+.edu-list li:hover {
+  background: rgba(26, 24, 20, 0.04);
+}
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .container { padding: 0 24px; }
+  header { padding: 56px 0 0; }
+  h1 { font-size: 36px; }
+  nav { gap: 16px; }
+  section { margin-bottom: 60px; }
+  .research-list li,
+  .edu-list li {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 18px 0;
+  }
+  .pub-list li {
+    grid-template-columns: 24px 1fr;
+    gap: 12px;
+  }
+  .pub-year {
+    grid-column: 2;
+    text-align: left;
+    margin-top: 6px;
+  }
+  .contact-list li {
+    grid-template-columns: 80px 1fr;
+    gap: 16px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header id="top">
+    <div class="eyebrow">Sapienza University of Rome · AlcorLab</div>
+    <h1>Pietro Manganelli Conforti, PhD</h1>
+    <p class="role">Postdoctoral Researcher in Computer Science.</p>
+
+    <nav>
+      <a href="#about">about</a>
+      <a href="#research">research</a>
+      <a href="#publications">publications</a>
+      <a href="#positions">positions</a>
+      <a href="#education">education</a>
+      <a href="#contact">contact</a>
+    </nav>
+  </header>
+
+  <section id="about">
+    <h2>About</h2>
+    <p>I graduated in Computer Science Engineering and obtained a Master's in Artificial Intelligence &amp; Robotics from Sapienza University of Rome, where I also completed my PhD in 2026 within the AlcorLab group under the supervision of Prof. Paolo Russo — including a six-month research visit to the University of Sydney. I'm now continuing in the same group as a postdoctoral researcher.</p>
+    <p>My research focuses on deep learning, computer vision, and explainable AI, with applications spanning medical imaging, environmental forecasting, and visual analytics. Beyond the technical side, I'm interested in the philosophical questions that the field continues to raise.</p>
+  </section>
+
+  <section id="research">
+    <h2>Research</h2>
+    <ul class="research-list">
+      <li>
+        <div class="area">Medical AI</div>
+        <div class="desc">Deep learning for cancer grading using Raman spectroscopy and wavelet transforms.</div>
+      </li>
+      <li>
+        <div class="area">Environment</div>
+        <div class="desc">Forecasting air quality and sea-surface temperature from open Copernicus data.</div>
+      </li>
+      <li>
+        <div class="area">Explainable AI</div>
+        <div class="desc">Using interpretability signals to guide knowledge distillation between models.</div>
+      </li>
+      <li>
+        <div class="area">Visual Analytics</div>
+        <div class="desc">Interactive environments for exploring high-dimensional financial data.</div>
+      </li>
+      <li>
+        <div class="area">Cybersecurity</div>
+        <div class="desc">Adversarial attacks and defences for LLMs in diagnostic settings; CAM manipulation for intellectual property protection of deep learning models.</div>
+      </li>
+    </ul>
+  </section>
+
+  <section id="publications">
+    <h2>Publications</h2>
+
+    <div class="pub-group">
+      <h3>Peer-reviewed</h3>
+      <ul class="pub-list">
+
+        <li>
+          <div>
+            <div class="pub-title">Teaching the Teacher to Teach: An eXplainable AI Approach</div>
+            <div class="pub-meta"><span class="me">P. Manganelli Conforti</span>, L. Papa, P. Russo, I. Amerini · VISAPP</div>
+          </div>
+          <div class="pub-year">2026</div>
+        </li>
+
+        <li>
+          <div>
+            <div class="pub-title">Advancing Sea Surface Temperature Forecasting with Deep Learning Techniques on Copernicus Data: an Application in the Gulf of Trieste</div>
+            <div class="pub-meta"><span class="me">P. Manganelli Conforti</span>, P. Russo, F. Di Ciacco · IEEE Metrosea</div>
+          </div>
+          <div class="pub-year">2025</div>
+        </li>
+
+        <li>
+          <div>
+            <div class="pub-title">Empowering Traditional Ensemble Learning Through Feature Learning and Wavelet Transforms for Environmental Analysis</div>
+            <div class="pub-meta"><span class="me">P. Manganelli Conforti</span>, A. Fanti, P. Nardelli, P. Russo · IEEE Transactions on Neural Networks and Learning Systems</div>
+          </div>
+          <div class="pub-year">2025</div>
+        </li>
+
+        <li>
+          <div>
+            <div class="pub-title">Raman Spectroscopy and AI Applications in Cancer Grading: An Overview</div>
+            <div class="pub-meta"><span class="me">P. Manganelli Conforti</span>, G. Lazzini, P. Russo, M. D'Acunto · IEEE Access, Vol. 12, pp. 54816–54852</div>
+          </div>
+          <div class="pub-year">2024</div>
+        </li>
+
+        <li>
+          <div>
+            <div class="pub-title">Enhancing Air Quality Forecasting Through Deep Learning and Continuous Wavelet Transform</div>
+            <div class="pub-meta"><span class="me">P. Manganelli Conforti</span>, A. Fanti, P. Nardelli, P. Russo · Image Analysis and Processing — ICIAP 2023 Workshops</div>
+          </div>
+          <div class="pub-year">2024</div>
+        </li>
+
+        <li>
+          <div>
+            <div class="pub-title">Deep Learning for Chondrogenic Tumor Classification through Wavelet Transform of Raman Spectra</div>
+            <div class="pub-meta"><span class="me">P. Manganelli Conforti</span>, M. D'Acunto, P. Russo · MDPI Sensors</div>
+          </div>
+          <div class="pub-year">2023</div>
+        </li>
+
+        <li>
+          <div>
+            <div class="pub-title">CryptoComparator: Supporting Cryptocurrencies Analysis through Visual Analytics</div>
+            <div class="pub-meta"><span class="me">P. Manganelli Conforti</span>, M. Emanuele, P. Nardelli, G. Santucci, M. Angelini · Computers &amp; Graphics, Vol. 114, pp. 276–285</div>
+          </div>
+          <div class="pub-year">2023</div>
+        </li>
+
+        <li>
+          <div>
+            <div class="pub-title">CryptoComparator: A Visual Analytics Environment for Cryptocurrencies Analysis</div>
+            <div class="pub-meta"><span class="me">P. Manganelli Conforti</span>, M. Emanuele, P. Nardelli, G. Santucci, M. Angelini · EuroVA</div>
+          </div>
+          <div class="pub-year">2022</div>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+  <section id="positions">
+    <h2>Positions</h2>
+    <ul class="edu-list">
+
+      <li>
+        <div class="edu-years">2026 — present</div>
+        <div class="edu-info">
+          <div class="degree">Postdoctoral Researcher</div>
+          <div class="school">Sapienza University of Rome · AlcorLab</div>
+        </div>
+      </li>
+
+      <li>
+        <div class="edu-years">Aug 2025 — Jan 2026</div>
+        <div class="edu-info">
+          <div class="degree">Visiting Researcher</div>
+          <div class="school">The University of Sydney · multimodal and medical vision–language models</div>
+        </div>
+      </li>
+
+    </ul>
+  </section>
+
+  <section id="education">
+    <h2>Education</h2>
+    <ul class="edu-list">
+
+      <li>
+        <div class="edu-years">2022 — 2026</div>
+        <div class="edu-info">
+          <div class="degree">Ph.D. in Engineering in Computer Science</div>
+          <div class="school">Sapienza University of Rome · Istituto Superiore di Sanità</div>
+        </div>
+      </li>
+
+      <li>
+        <div class="edu-years">2019 — 2022</div>
+        <div class="edu-info">
+          <div class="degree">M.Sc. in Artificial Intelligence &amp; Robotics</div>
+          <div class="school">Sapienza University of Rome</div>
+        </div>
+      </li>
+
+      <li>
+        <div class="edu-years">2016 — 2019</div>
+        <div class="edu-info">
+          <div class="degree">B.Sc. in Computer and Control System Engineering</div>
+          <div class="school">Sapienza University of Rome</div>
+        </div>
+      </li>
+
+      <li>
+        <div class="edu-years">2016</div>
+        <div class="edu-info">
+          <div class="degree">Scientific High School Diploma</div>
+          <div class="school">Liceo Scientifico Statale Talete · Rome</div>
+        </div>
+      </li>
+
+    </ul>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <ul class="contact-list">
+      <li>
+        <div class="label">email</div>
+        <div class="value">
+          <span class="email-copy-wrap">
+            <a href="mailto:pietro.manganelliconforti@diag.uniroma1.it" id="email-link" title="click to copy">pietro.manganelliconforti@diag.uniroma1.it</a>
+            <span class="copy-feedback" id="copy-feedback">copied</span>
+          </span>
+        </div>
+      </li>
+      <li>
+        <div class="label">linkedin</div>
+        <div class="value"><a href="https://www.linkedin.com/in/pietro-manganelli-conforti/" target="_blank" rel="noopener">/in/pietro-manganelli-conforti</a></div>
+      </li>
+      <li>
+        <div class="label">orcid</div>
+        <div class="value"><a href="https://orcid.org/0000-0002-4873-1369" target="_blank" rel="noopener">0000-0002-4873-1369</a></div>
+      </li>
+      <li>
+        <div class="label">affiliation</div>
+        <div class="value">Sapienza University of Rome · DIAG · AlcorLab</div>
+      </li>
+    </ul>
+  </section>
+
+  <footer>
+    <div>© 2026 Pietro Manganelli Conforti</div>
+    <div>Rome, Italy</div>
+  </footer>
+
+</div>
+
+<button id="dark-toggle" title="Toggle dark mode" aria-label="Toggle dark mode">◐</button>
+<button id="back-top" aria-label="Back to top">↑ top</button>
+<div id="cursor-dot"></div>
+
+<div id="progress-bar"></div>
+
+<script>
+(function () {
+
+  /* ── Progress bar ── */
+  const bar = document.getElementById('progress-bar');
+  function updateBar() {
+    const scrolled = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
+  }
+
+  /* ── Scroll reveal ── */
+  const sections = document.querySelectorAll('section, header');
+  sections.forEach(el => el.classList.add('reveal'));
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), 60);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  sections.forEach(el => observer.observe(el));
+
+  /* ── Active nav on scroll ── */
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
+  const sectionEls = Array.from(navLinks).map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  function updateNav() {
+    let current = '';
+    sectionEls.forEach(sec => {
+      if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+
+  /* ── Dark mode toggle ── */
+  const toggle = document.getElementById('dark-toggle');
+  const stored = localStorage.getItem('theme');
+  if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    toggle.textContent = '○';
+  }
+  toggle.addEventListener('click', () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'light');
+      toggle.textContent = '◐';
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+      toggle.textContent = '○';
+    }
+  });
+
+  /* ── Custom cursor dot ── */
+  const dot = document.getElementById('cursor-dot');
+  document.addEventListener('mousemove', e => {
+    dot.style.left = e.clientX + 'px';
+    dot.style.top  = e.clientY + 'px';
+    dot.style.opacity = '1';
+  });
+  document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; });
+
+  /* ── Back to top ── */
+  const backTop = document.getElementById('back-top');
+  function updateBackTop() {
+    backTop.classList.toggle('visible', window.scrollY > 300);
+  }
+  backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  /* ── Copy email ── */
+  const emailLink = document.getElementById('email-link');
+  const feedback  = document.getElementById('copy-feedback');
+  let copyTimer;
+  if (emailLink) {
+    emailLink.addEventListener('click', e => {
+      e.preventDefault();
+      navigator.clipboard.writeText('pietro.manganelliconforti@diag.uniroma1.it').then(() => {
+        feedback.classList.add('show');
+        clearTimeout(copyTimer);
+        copyTimer = setTimeout(() => feedback.classList.remove('show'), 1800);
+      }).catch(() => {
+        // fallback: open mailto if clipboard fails
+        window.location.href = emailLink.href;
+      });
+    });
+  }
+
+  /* ── Scroll listener ── */
+  window.addEventListener('scroll', () => {
+    updateBar();
+    updateNav();
+    updateBackTop();
+  }, { passive: true });
+
+  updateBar();
+  updateNav();
+  updateBackTop();
+
+})();
+</script>
+
+</body>
+</html>
