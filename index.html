@@ -47,27 +47,15 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background 0.35s ease, color 0.35s ease;
-  cursor: none;
 }
 
-/* CUSTOM CURSOR */
-#cursor-dot {
-  position: fixed;
-  width: 7px;
-  height: 7px;
-  background: var(--ink);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: background 0.35s ease, opacity 0.2s ease;
-  opacity: 0;
+/* SECTION ACCENT PALETTE */
+#progress-bar {
+  transition: width 0.08s linear, background 0.8s ease !important;
 }
-@media (hover: none) {
-  #cursor-dot { display: none; }
-  body { cursor: auto; }
+nav a.active {
+  transition: color 0.4s ease !important;
 }
-a, button { cursor: none; }
 
 /* DARK MODE TOGGLE */
 #dark-toggle {
@@ -85,7 +73,6 @@ a, button { cursor: none; }
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: none;
   z-index: 200;
   transition: background 0.35s ease, border-color 0.35s ease, color 0.2s ease, opacity 0.2s ease;
   opacity: 0.55;
@@ -104,7 +91,6 @@ a, button { cursor: none; }
   background: transparent;
   border: none;
   padding: 0;
-  cursor: none;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease, color 0.15s ease;
@@ -420,7 +406,6 @@ body::before {
 
 /* NAV ACTIVE */
 nav a.active {
-  color: var(--ink);
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-color: var(--ink-3);
@@ -697,7 +682,6 @@ nav a.active {
 
 <button id="dark-toggle" title="Toggle dark mode" aria-label="Toggle dark mode">◐</button>
 <button id="back-top" aria-label="Back to top">↑ top</button>
-<div id="cursor-dot"></div>
 
 <div id="progress-bar"></div>
 
@@ -734,7 +718,15 @@ nav a.active {
       if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
     });
     navLinks.forEach(a => {
-      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      const isActive = a.getAttribute('href') === '#' + current;
+      a.classList.toggle('active', isActive);
+      if (isActive) {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const set = isDark ? palettes.dark : palettes.light;
+        a.style.color = set[current] || set.top;
+      } else {
+        a.style.color = '';
+      }
     });
   }
 
@@ -756,16 +748,54 @@ nav a.active {
       localStorage.setItem('theme', 'dark');
       toggle.textContent = '○';
     }
+    setTimeout(() => applyAccent(currentSection), 10);
   });
 
-  /* ── Custom cursor dot ── */
-  const dot = document.getElementById('cursor-dot');
-  document.addEventListener('mousemove', e => {
-    dot.style.left = e.clientX + 'px';
-    dot.style.top  = e.clientY + 'px';
-    dot.style.opacity = '1';
-  });
-  document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; });
+  /* ── Section accent palette ── */
+  const palettes = {
+    light: {
+      top:          '#1A1814',
+      about:        '#5C4033',
+      research:     '#2E6B50',
+      publications: '#2B4E8C',
+      positions:    '#7A4A1A',
+      education:    '#5B3080',
+      contact:      '#1A1814',
+    },
+    dark: {
+      top:          '#F0EBE0',
+      about:        '#D4C4A8',
+      research:     '#8FBF9F',
+      publications: '#8AAFD4',
+      positions:    '#C8A882',
+      education:    '#B09AC8',
+      contact:      '#F0EBE0',
+    }
+  };
+
+  function applyAccent(sectionId) {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const set = isDark ? palettes.dark : palettes.light;
+    const color = set[sectionId] || set.top;
+    document.documentElement.style.setProperty('--accent', color);
+    bar.style.background = color;
+    document.querySelectorAll('h2').forEach(h => h.style.borderBottomColor = color + '55');
+    document.querySelectorAll('nav a.active').forEach(a => a.style.color = color);
+  }
+
+  let currentSection = 'top';
+  function updateAccentOnScroll() {
+    let found = 'top';
+    sectionEls.forEach(sec => {
+      if (window.scrollY >= sec.offsetTop - 200) found = sec.id;
+    });
+    if (found !== currentSection) {
+      currentSection = found;
+      applyAccent(found);
+    }
+  }
+  applyAccent('top');
+  updateAccentOnScroll();
 
   /* ── Back to top ── */
   const backTop = document.getElementById('back-top');
@@ -797,6 +827,7 @@ nav a.active {
     updateBar();
     updateNav();
     updateBackTop();
+    updateAccentOnScroll(); // called after updateNav so .active is set
   }, { passive: true });
 
   updateBar();
